@@ -126,7 +126,7 @@ export default function App() {
                 ALI DEV <br /><span className="text-zinc-700">FRONTEND ENGINEER.</span>
               </h1>
               <p className="text-base md:text-xl text-zinc-400 leading-relaxed max-w-3xl font-normal mb-8">
-                I build complex, data-intensive user interfaces, scalable frontend architectures, and optimized application layers for global technology teams and scaling remote digital agencies [PARSE_ERROR].
+                I build complex, data-intensive user interfaces, scalable frontend architectures, and optimized application layers for global technology teams and scaling remote digital agencies.
               </p>
               <div className="flex flex-wrap gap-4">
                 <a href="#projects" onClick={(e) => handleScroll(e, 'projects')} className="bg-white text-black text-[10px] font-bold tracking-widest uppercase px-6 py-4 hover:bg-zinc-200 transition-colors">
