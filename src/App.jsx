@@ -381,7 +381,7 @@ export default function App() {
           <footer className="w-full border-t border-zinc-900 px-6 md:px-16 py-8 flex flex-col md:flex-row justify-between items-center text-[9px] font-mono tracking-wider text-zinc-500 space-y-4 md:space-y-0 max-w-6xl mx-auto">
             <span>&copy; {new Date().getFullYear()} ALI DEV. ENGINE OPERATIONAL.</span>
             <div className="flex space-x-6 uppercase font-bold text-zinc-400">
-              <a href="#" className="hover:text-white transition-colors">GitHub</a>
+              <a href="https://github.com/Alihaidercr3" className="hover:text-white transition-colors">GitHub</a>
               <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
             </div>
           </footer>
