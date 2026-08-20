@@ -10,7 +10,7 @@ function Reveal({ children, direction = "up" }) {
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -20,19 +20,19 @@ function Reveal({ children, direction = "up" }) {
     if (isIntersecting) return "opacity-100 translate-x-0 translate-y-0";
     switch (direction) {
       case "left":
-        return "opacity-0 -translate-x-12";
+        return "opacity-0 -translate-x-8";
       case "right":
-        return "opacity-0 translate-x-12";
+        return "opacity-0 translate-x-8";
       case "up":
       default:
-        return "opacity-0 translate-y-12";
+        return "opacity-0 translate-y-8";
     }
   };
 
   return (
     <div
       ref={ref}
-      className={`transition-all duration-1000 ease-out will-change-transform ${getDirectionClass()}`}
+      className={`transition-all duration-500 ease-out will-change-transform ${getDirectionClass()}`}
     >
       {children}
     </div>
@@ -42,53 +42,55 @@ function Reveal({ children, direction = "up" }) {
 export default function Waitlist() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email.trim()) {
-      setSubmitted(true);
-      setEmail("");
+      setIsSubmitting(true);
+      setTimeout(() => {
+        setSubmitted(true);
+        setIsSubmitting(false);
+        setEmail("");
+      }, 500);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#000000] text-[#fafafa] antialiased font-sans select-none selection:bg-zinc-800 selection:text-white">
-      {/* 1. MINIMAL AUTOMATION HEADER BAR */}
-      <header className="w-full max-w-6xl mx-auto px-6 md:px-16 py-6 flex justify-between items-center border-b border-zinc-900/50">
-        <span className="text-xs font-black tracking-widest text-white uppercase">
-          ALI DESIGN CO. // STUDIO
+    <div className="min-h-screen bg-[#fbf7e6] text-[#16140e] antialiased font-sans selection:bg-[#f3b44a] selection:text-[#16140e]">
+      {/* 1. HEADER BAR */}
+      <header className="w-full max-w-5xl mx-auto px-6 md:px-12 py-5 flex justify-between items-center border-b border-[#16140e]/15">
+        <span className="text-xs font-bold tracking-wider uppercase text-[#16140e]">
+          Ali Haider <span className="text-[#57534a] font-normal">// Studio Access</span>
         </span>
-        <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase">
-          [ STATUS: ACCESS OPEN ]
-        </span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[50px] bg-[#efe9d2] border border-[#16140e]/20 text-[11px] text-[#57534a] font-mono shadow-[2px_3px_0px_0px_rgba(22,20,14,0.07)]">
+          <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+          STATUS: ACCESS OPEN
+        </div>
       </header>
 
-      {/* 2. CONVERSION-FOCUSED HERO BLOCK */}
-      {/* 2. CONVERSION-FOCUSED HERO BLOCK */}
-      <section className="max-w-4xl mx-auto px-6 pt-24 pb-20 text-center flex flex-col items-center justify-center w-full">
-        {/* UPPER TEXT ELEMENT LAYERS */}
+      {/* 2. HERO SECTION */}
+      <section className="max-w-3xl mx-auto px-6 pt-20 pb-16 text-center flex flex-col items-center justify-center w-full">
         <Reveal direction="up">
-          <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase mb-4 block text-center">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#57534a] mb-3 block text-center">
             // PROTOCOL INCEPTION
           </span>
-          <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-white uppercase leading-tight max-w-3xl mb-6 text-center">
-            Pixel-Perfect Frontend{" "}
-            <span className="text-zinc-600">Layout Production.</span>
+          <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#16140e] uppercase leading-[1.1] mb-6 text-center">
+            Pixel-Perfect Frontend <br />
+            <span className="text-[#57534a]">Layout Production</span>
           </h1>
-          <p className="text-sm md:text-base text-zinc-400 max-w-xl leading-relaxed mb-8 font-normal text-center mx-auto">
-            We turn complex Figma design files and written briefs into
-            ultra-fast, mobile-responsive, and conversion-focused websites.
-            Built with zero performance lag.
+          <p className="text-sm sm:text-base text-[#57534a] max-w-xl leading-relaxed mb-8 font-normal text-center mx-auto">
+            We convert complex Figma design files and architectural specs into ultra-fast, WCAG-compliant, and conversion-focused web applications.
           </p>
         </Reveal>
 
-        {/* EMAIL CAPTURE INPUT FIELD CONTAINER (Safely wrapped inside the section parent) */}
+        {/* EMAIL CAPTURE FORM */}
         <Reveal direction="up">
-          <div className="w-full max-w-md bg-[#09090b] border border-zinc-800 p-2 rounded-lg focus-within:border-zinc-500 transition-colors mx-auto text-center mt-4">
+          <div className="w-full max-w-md bg-[#efe9d2] border border-[#16140e] p-3 rounded-[3px] shadow-[3px_5px_0px_0px_#16140e] mx-auto text-center mt-2">
             {!submitted ? (
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-2 justify-center items-center w-full"
+                className="flex flex-col sm:flex-row gap-2.5 justify-center items-center w-full"
               >
                 <input
                   type="email"
@@ -96,17 +98,18 @@ export default function Waitlist() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter institutional email..."
-                  className="w-full bg-transparent px-3 py-2 text-xs text-white focus:outline-none placeholder-zinc-600 font-mono text-center sm:text-left"
+                  className="w-full bg-[#fbf7e6] border border-[#16140e] px-3.5 py-2.5 text-xs text-[#16140e] placeholder-[#57534a] rounded-[3px] focus:outline-none focus:ring-2 focus:ring-[#f3b44a] font-mono"
                 />
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-white text-black text-[10px] font-bold tracking-widest uppercase px-5 py-2.5 hover:bg-zinc-200 transition-all font-sans whitespace-nowrap"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto bg-[#f3b44a] text-[#16140e] border border-[#16140e] text-xs font-bold tracking-wider uppercase px-5 py-2.5 rounded-[3px] hover:-translate-y-0.5 hover:shadow-[3px_4px_0px_0px_#16140e] shadow-[2px_3px_0px_0px_#16140e] transition-all whitespace-nowrap disabled:opacity-50 cursor-pointer"
                 >
-                  Join Waitlist
+                  {isSubmitting ? "Processing..." : "Join Waitlist"}
                 </button>
               </form>
             ) : (
-              <div className="text-[10px] font-mono tracking-wider text-zinc-400 uppercase py-2.5 px-3 text-center">
+              <div className="text-xs font-mono tracking-wide text-[#16140e] py-3 px-3 text-center bg-[#fbf7e6] border border-[#16140e] rounded-[3px]">
                 ✓ System verification sent. Terminal access pending.
               </div>
             )}
@@ -114,52 +117,49 @@ export default function Waitlist() {
         </Reveal>
       </section>
 
-      {/* 3. PERFORMANCE CARD GRID MATRIX */}
-      <section className="max-w-6xl mx-auto px-6 md:px-16 py-16 border-t border-zinc-900 overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* 3. PERFORMANCE MATRIX */}
+      <section className="max-w-5xl mx-auto px-6 md:px-12 py-16 border-t border-[#16140e]/15">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Reveal direction="left">
-            <div className="border border-zinc-900 bg-[#09090b] p-6 rounded-md hover:border-zinc-800 transition-colors h-full">
-              <span className="text-xs font-mono text-zinc-600 uppercase block mb-3">
+            <div className="bg-[#efe9d2] border border-[#16140e] p-6 rounded-[3px] shadow-[3px_5px_0px_0px_#16140e] hover:-translate-y-0.5 transition-all h-full">
+              <span className="text-xs font-mono text-[#57534a] uppercase block mb-3">
                 [ 01 / INTEGRITY ]
               </span>
-              <h3 className="text-sm font-bold text-white mb-2 uppercase">
+              <h3 className="text-sm font-bold text-[#16140e] mb-2 uppercase">
                 Figma To Code
               </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-mono">
-                Translating visual design assets into highly structured,
-                semantic code layouts that work cleanly across all devices.
+              <p className="text-xs text-[#57534a] leading-relaxed">
+                Translating visual design assets into highly structured, semantic React layout architectures that scale cleanly across viewports.
               </p>
             </div>
           </Reveal>
 
           <Reveal direction="up">
-            <div className="border border-zinc-800 bg-[#0c0c0e] p-6 rounded-md hover:border-zinc-700 transition-colors h-full">
-              <span className="text-xs font-mono text-zinc-500 uppercase block mb-3">
+            <div className="bg-[#efe9d2] border border-[#16140e] p-6 rounded-[3px] shadow-[3px_5px_0px_0px_#16140e] hover:-translate-y-0.5 transition-all h-full">
+              <span className="text-xs font-mono text-[#57534a] uppercase block mb-3">
                 [ 02 / METRICS ]
               </span>
-              <h3 className="text-sm font-bold text-white mb-2 uppercase">
+              <h3 className="text-sm font-bold text-[#16140e] mb-2 uppercase">
                 Speed Optimized
               </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-mono">
-                Lightweight layout architecture built without slow dependencies
-                to ensure maximum scores on Core Web Vitals.
+              <p className="text-xs text-[#57534a] leading-relaxed">
+                Lightweight layout engines built without bloated dependencies to ensure peak performance scores across Core Web Vitals.
               </p>
             </div>
           </Reveal>
 
           <Reveal direction="right">
-            <div className="border border-zinc-900 bg-[#09090b] p-6 rounded-md hover:border-zinc-800 transition-colors h-full">
-              <span className="text-xs font-mono text-zinc-600 uppercase block mb-3">
+            <div className="bg-[#efe9d2] border border-[#16140e] p-6 rounded-[3px] shadow-[3px_5px_0px_0px_#16140e] hover:-translate-y-0.5 transition-all h-full">
+              <span className="text-xs font-mono text-[#57534a] uppercase block mb-3">
                 [ 03 / STABILITY ]
               </span>
-              <h3 className="text-sm font-bold text-white mb-2 uppercase">
+              <h3 className="text-sm font-bold text-[#16140e] mb-2 uppercase">
                 Responsive QA
               </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-mono">
-                Thoroughly audited layout components tested across Google
-                Chrome, Safari, and small mobile viewports for perfect scaling.
+              <p className="text-xs text-[#57534a] leading-relaxed">
+                Thoroughly audited layout components tested across desktop and mobile viewports for strict WCAG AA accessibility compliance.
               </p>
-            </div> 
+            </div>
           </Reveal>
         </div>
       </section>
